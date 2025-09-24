@@ -1,0 +1,41 @@
+<launch>
+  <!-- Gazebo world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <env name="GAZEBO_RESOURCE_PATH" value="$(find enph353_ros_lab)"/>
+    <env name="GAZEBO_MODEL_PATH" value="$(find enph353_ros_lab)/models"/>
+    <arg name="world_name" value="$(find enph353_ros_lab)/worlds/353_ros_lab.world"/>
+    <arg name="gui" value="true"/>
+  </include>
+
+ 
+  <include file="$(find enph353_ros_lab)/launch/robot.launch">
+    <arg name="init_pose" value="-x 0.0 -y 0.0 -z 1.0 -R 0.0 -P 0.0 -Y 0.0"/>
+  </include>
+
+
+  <env name="ROS_IMAGE_TRANSPORT" value="raw"/>
+
+
+  <node pkg="enph353_ros_lab"
+        type="LineFollower.py"
+        name="LineFollower"
+        output="screen">
+
+ <!-- most of this below is not used -->
+    <param name="front_topic" value="/front_camera/image_raw"/>
+    <param name="left_topic"  value="/left_camera/image_raw"/>
+    <param name="right_topic" value="/right_camera/image_raw"/>
+    <param name="cmd_topic"   value="/cmd_vel"/>
+
+
+    <param name="roi_y0" value="0.70"/>
+    <param name="roi_x0" value="0.10"/>
+    <param name="roi_x1" value="0.90"/>
+    <param name="kp" value="0.08"/>
+    <param name="ki" value="0.00"/>
+    <param name="kd" value="0.02"/>
+  </node>
+</launch>
+
+
+
